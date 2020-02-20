@@ -1,4 +1,4 @@
-@Library(['release-library@master', 'shared-library@master']) _
+@Library(['deploy-library@master', 'shared-library@master']) _
 env.PIPELINE_BRANCH = "master"
 
 import com.duvalhub.deploy.parameters.Parameters
