@@ -1,5 +1,4 @@
-@Library(['deploy-library@master', 'shared-library@master']) _
-env.PIPELINE_BRANCH = "master"
+@Library(['deploy-library@master', 'shared-library@improvement/launch-docker-node-using-ssh']) _
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
@@ -9,7 +8,6 @@ import com.duvalhub.appconfig.AppConfig
 import com.duvalhub.deploy.DeployRequest
 
 dockerSlave {
-//node {
     properties([
         parameters([
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
