@@ -30,7 +30,8 @@ dockerSlave {
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
-        echo appConfig
+        def appConfigString = appConfig.toString()
+        echo appConfigString
         sh "exit 1"
 //         AppConfig appConfig = readConfiguration()
             
