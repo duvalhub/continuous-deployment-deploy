@@ -1,5 +1,4 @@
 @Library(['deploy-library@master', 'shared-library@master']) _
-env.PIPELINE_BRANCH = "master"
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
@@ -9,7 +8,6 @@ import com.duvalhub.appconfig.AppConfig
 import com.duvalhub.deploy.DeployRequest
 
 dockerSlave {
-//node {
     properties([
         parameters([
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
@@ -30,10 +28,8 @@ dockerSlave {
         GitRepo appGitRepo = new GitRepo(org, repo, "develop")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
-        initializeWorkdir.stage(initWorkDirIn)
-
-        AppConfig appConfig = readConfiguration()
-            
+        initWorkDirIn.setCloneAppRepo(false)
+        AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
 
     } else {
