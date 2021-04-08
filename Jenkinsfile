@@ -1,4 +1,4 @@
-@Library(['deploy-library@master', 'shared-library@improvement/launch-docker-node-using-ssh']) _
+@Library(['deploy-library@master', 'shared-library@master']) _
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
