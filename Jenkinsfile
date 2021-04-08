@@ -30,9 +30,6 @@ dockerSlave {
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
-        def appConfigString = appConfig.toString()
-        echo appConfigString
-
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
 
     } else {
