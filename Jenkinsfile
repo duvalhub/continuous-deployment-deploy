@@ -32,7 +32,7 @@ dockerSlave {
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
         echo appConfig
         sh "exit 1"
-        AppConfig appConfig = readConfiguration()
+//         AppConfig appConfig = readConfiguration()
             
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
 
