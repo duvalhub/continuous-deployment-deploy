@@ -1,4 +1,4 @@
-@Library(['deploy-library@master', 'shared-library@master']) _
+@Library(['deploy-library@master', 'shared-library@feature/database-by-configuration']) _
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
