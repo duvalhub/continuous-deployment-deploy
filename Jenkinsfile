@@ -13,7 +13,7 @@ dockerSlave {
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
             choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
             string(defaultValue: 'latest', name: 'VERSION'),
-            string(defaultValue: 'master', name: 'CONFIG_GIT_BRANCH'),
+            string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
             string(defaultValue: 'false', name: 'DRY_RUN')
         ])
     ])
