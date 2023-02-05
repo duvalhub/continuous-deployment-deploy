@@ -1,4 +1,4 @@
-@Library(['deploy-library@master', 'shared-library@master']) _
+@Library(['deploy-library@improvement/choose-config-branch-from-pipeline-params', 'shared-library@improvement/database-config-per-environment']) _
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
