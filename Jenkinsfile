@@ -32,13 +32,9 @@ dockerSlave {
         GitRepo appGitRepo = new GitRepo(org, repo, "develop")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
-        if(params.configGitBranch) {
+        if(parameters.configGitBranch) {
             echo "Using '${params.configGitBranch}' as pipeline config branch"
             initWorkDirIn.configGitBranch = params.configGitBranch
-        } else {
-            echo "wtf"
-            echo params.configGitBranch
-            echo params
         }
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
