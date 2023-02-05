@@ -1,4 +1,7 @@
-@Library(['deploy-library@master', 'shared-library@master']) _
+@Library([
+    'deploy-library@improvement/choose-config-branch-from-pipeline-params',
+    'shared-library@master'
+]) _
 
 import com.duvalhub.deploy.parameters.Parameters
 import com.duvalhub.git.GitCloneRequest
@@ -13,12 +16,13 @@ dockerSlave {
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
             choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
             string(defaultValue: 'latest', name: 'VERSION'),
+            string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
             string(defaultValue: 'false', name: 'DRY_RUN')
         ])
     ])
 
     if ( params.DRY_RUN == 'false' ) {
-        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION)
+        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.CONFIG_GIT_BRANCH)
 
         checkout scm
 
@@ -28,6 +32,11 @@ dockerSlave {
         GitRepo appGitRepo = new GitRepo(org, repo, "develop")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
+        String configGitBranch = parameters.configGitBranch
+        if(configGitBranch) {
+            echo "Using '${configGitBranch}' as pipeline config branch"
+            initWorkDirIn.configGitBranch = configGitBranch
+        }
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
