@@ -1,5 +1,5 @@
 @Library([
-    'deploy-library@improvement/choose-config-branch-from-pipeline-params',
+    'deploy-library@master',
     'shared-library@master'
 ]) _
 
