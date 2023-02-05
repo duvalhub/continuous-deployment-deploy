@@ -13,12 +13,13 @@ dockerSlave {
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
             choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
             string(defaultValue: 'latest', name: 'VERSION'),
+            string(defaultValue: 'master', name: 'CONFIG_GIT_BRANCH'),
             string(defaultValue: 'false', name: 'DRY_RUN')
         ])
     ])
 
     if ( params.DRY_RUN == 'false' ) {
-        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION)
+        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.CONFIG_GIT_BRANCH)
 
         checkout scm
 
@@ -28,6 +29,7 @@ dockerSlave {
         GitRepo appGitRepo = new GitRepo(org, repo, "develop")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
+        initializeWorkdirIn.configGitBranch = params?.configGitBranch
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
