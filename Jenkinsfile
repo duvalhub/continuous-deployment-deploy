@@ -29,7 +29,7 @@ dockerSlave {
         GitRepo appGitRepo = new GitRepo(org, repo, "develop")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
-        initializeWorkdirIn.configGitBranch = params?.configGitBranch
+        initWorkDirIn.configGitBranch = params?.configGitBranch
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
         deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
