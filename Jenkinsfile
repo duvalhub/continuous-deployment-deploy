@@ -1,6 +1,6 @@
 @Library([
     'deploy-library@master',
-    'shared-library@master'
+    'shared-library@improvement/pipeline-retrieve-config-from-app-repo'
 ]) _
 
 import com.duvalhub.deploy.parameters.Parameters
