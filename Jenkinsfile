@@ -29,7 +29,7 @@ dockerSlave {
         String[] repo_parts = parameters.git_repository.split('/')
         String org = repo_parts[0]
         String repo = repo_parts[1]
-        GitRepo appGitRepo = new GitRepo(org, repo, "develop")
+        GitRepo appGitRepo = new GitRepo(org, repo, "main")
 
         InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
         String configGitBranch = parameters.configGitBranch
