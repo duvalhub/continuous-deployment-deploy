@@ -1,5 +1,5 @@
 @Library([
-    'deploy-library@master',
+    'deploy-library@improvement/support-having-pipeline-config-file-in-project',
     'shared-library@improvement/pipeline-retrieve-config-from-app-repo'
 ]) _
 
