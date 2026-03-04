@@ -4,7 +4,6 @@
 ]) _
 
 import com.duvalhub.deploy.parameters.Parameters
-import com.duvalhub.git.GitCloneRequest
 import com.duvalhub.git.GitRepo
 import com.duvalhub.initializeworkdir.InitializeWorkdirIn
 import com.duvalhub.appconfig.AppConfig
@@ -16,13 +15,14 @@ dockerSlave {
             string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
             choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
             string(defaultValue: 'latest', name: 'VERSION'),
+            string(defaultValue: 'master', name: 'LABEL'),
             string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
             string(defaultValue: 'false', name: 'DRY_RUN')
         ])
     ])
 
     if ( params.DRY_RUN == 'false' ) {
-        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.CONFIG_GIT_BRANCH)
+        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.LABEL, params.CONFIG_GIT_BRANCH)
 
         checkout scm
 
@@ -39,8 +39,7 @@ dockerSlave {
         }
         initWorkDirIn.setCloneAppRepo(false)
         AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
-        deploy(new DeployRequest(appConfig, parameters.version, parameters.environment))
-
+        deploy(new DeployRequest(appConfig, parameters.version, parameters.environment, parameters.label))
     } else {
         echo "Dry run detected! Aborting pipeline."
     }
