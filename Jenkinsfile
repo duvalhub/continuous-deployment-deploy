@@ -10,38 +10,38 @@ import com.duvalhub.appconfig.AppConfig
 import com.duvalhub.deploy.DeployRequest
 
 dockerSlave {
-    properties([
-        parameters([
-            string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
-            choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
-            string(defaultValue: 'latest', name: 'VERSION'),
-            string(defaultValue: 'master', name: 'LABEL'),
-            string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
-            string(defaultValue: 'false', name: 'DRY_RUN')
-        ])
-    ])
+  properties([
+      parameters([
+          string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
+          choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
+          string(defaultValue: 'latest', name: 'VERSION'),
+          string(defaultValue: 'master', name: 'LABEL'),
+          string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
+          string(defaultValue: 'false', name: 'DRY_RUN')
+      ])
+  ])
 
-    if ( params.DRY_RUN == 'false' ) {
-        Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.LABEL, params.CONFIG_GIT_BRANCH)
+  if (params.DRY_RUN == 'false') {
+    Parameters parameters = new Parameters(params.GIT_REPOSITORY, params.ENVIRONMENT, params.VERSION, params.LABEL, params.CONFIG_GIT_BRANCH)
 
-        checkout scm
+    checkout scm
 
-        String[] repo_parts = parameters.git_repository.split('/')
-        String org = repo_parts[0]
-        String repo = repo_parts[1]
-        GitRepo appGitRepo = new GitRepo(org, repo, "main")
+    String[] repo_parts = parameters.git_repository.split('/')
+    String org = repo_parts[0]
+    String repo = repo_parts[1]
+    GitRepo appGitRepo = new GitRepo(org, repo, "main")
 
-        InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
-        String configGitBranch = parameters.configGitBranch
-        if(configGitBranch) {
-            echo "Using '${configGitBranch}' as pipeline config branch"
-            initWorkDirIn.configGitBranch = configGitBranch
-        }
-        initWorkDirIn.setCloneAppRepo(false)
-        AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
-        deploy(new DeployRequest(appConfig, parameters.version, parameters.environment, parameters.label))
-    } else {
-        echo "Dry run detected! Aborting pipeline."
+    InitializeWorkdirIn initWorkDirIn = new InitializeWorkdirIn(appGitRepo)
+    String configGitBranch = parameters.configGitBranch
+    if (configGitBranch) {
+      echo "Using '${configGitBranch}' as pipeline config branch"
+      initWorkDirIn.configGitBranch = configGitBranch
     }
+    initWorkDirIn.setCloneAppRepo(false)
+    AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
+    deploy(new DeployRequest(appGitRepo, appConfig, parameters.version, parameters.environment, parameters.label))
+  } else {
+    echo "Dry run detected! Aborting pipeline."
+  }
 
 }
