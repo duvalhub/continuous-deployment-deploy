@@ -39,7 +39,7 @@ dockerSlave {
     }
     initWorkDirIn.setCloneAppRepo(false)
     AppConfig appConfig = initializeWorkdir.stage(initWorkDirIn)
-    deploy(new DeployRequest(appGitRepo, appConfig, parameters.version, parameters.environment, parameters.label))
+    deploy(new DeployRequest(appConfig, appGitRepo, parameters.version, parameters.environment, parameters.label))
   } else {
     echo "Dry run detected! Aborting pipeline."
   }
