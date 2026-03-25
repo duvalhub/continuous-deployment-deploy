@@ -1,6 +1,6 @@
 @Library([
-    'deploy-library@improvement/support-having-pipeline-config-file-in-project',
-    'shared-library@improvement/pipeline-retrieve-config-from-app-repo'
+    'deploy-library@master',
+    'shared-library@master'
 ]) _
 
 import com.duvalhub.deploy.parameters.Parameters
@@ -13,7 +13,7 @@ dockerSlave {
   properties([
       parameters([
           string(defaultValue: 'duvalhub/continuous-deployment-test-app', name: 'GIT_REPOSITORY'),
-          choice(choices: ['dev', 'stage', 'prod'], name: 'ENVIRONMENT'),
+          choice(choices: ['dev', 'prod'], name: 'ENVIRONMENT'),
           string(defaultValue: 'latest', name: 'VERSION'),
           string(defaultValue: 'master', name: 'LABEL'),
           string(defaultValue: null, name: 'CONFIG_GIT_BRANCH'),
